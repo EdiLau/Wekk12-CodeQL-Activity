@@ -1,0 +1,28 @@
+/**
+ * @description Find functions that are longer than ten lines
+ * @kind problem
+ * @id javascript/functions-longer-ten-lines
+ * @problem.severity recommendation
+ */
+import javascript
+
+/**
+ * Holds if a function is longer than ten lines.
+ */
+predicate isLonger(Function func) {
+  func.getNumLines() > 10
+}
+
+/**
+* Holds if `caller` contains a call to `callee`.
+*/
+predicate calls(Function caller, Function callee) {
+  exists(DataFlow::CallNode call |
+    call.getEnclosingFunction() = caller and
+    call.getACallee() = callee
+  )
+}
+
+from Function func, 
+where isLonger(func) 
+select func, "is longer than ten lines"
